@@ -1,7 +1,9 @@
-package com.dtms.movielistsampleapp;
+package com.dtms.movielistsampleapp.movies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.dtms.movielistsampleapp.R;
 
 public class MoviesActivity extends AppCompatActivity {
 
