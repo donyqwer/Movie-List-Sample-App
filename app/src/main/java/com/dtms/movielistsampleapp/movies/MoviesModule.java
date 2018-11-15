@@ -1,5 +1,8 @@
 package com.dtms.movielistsampleapp.movies;
 
+import com.dtms.movielistsampleapp.http.MoreInfoApiService;
+import com.dtms.movielistsampleapp.http.MovieApiService;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -20,7 +23,7 @@ public class MoviesModule {
 
     @Singleton
     @Provides
-    public MoviesRepository provideRepository () {
-        return new MemoryRepository();
+    public MoviesRepository provideRepository (MovieApiService movieApiService, MoreInfoApiService moreInfoApiService) {
+        return new MemoryRepository(movieApiService, moreInfoApiService);
     }
 }

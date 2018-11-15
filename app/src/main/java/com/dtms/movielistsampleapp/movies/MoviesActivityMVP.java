@@ -3,10 +3,12 @@ package com.dtms.movielistsampleapp.movies;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public interface MoviesActivityMVP {
     interface View {
 
-        void showData(List<ViewModel> dummyData);
+        void updateData(ViewModel viewModel);
 
         void showSnackbar(String s);
 
@@ -16,11 +18,15 @@ public interface MoviesActivityMVP {
 
         void loadData();
 
+        void rxUnsubscribe();
+
         void setView(MoviesActivityMVP.View view);
 
     }
 
     interface Model {
-        List<ViewModel> getDummyData();
+
+        Observable<ViewModel> result();
+
     }
 }

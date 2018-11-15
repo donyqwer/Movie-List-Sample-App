@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.dtms.movielistsampleapp.R;
 import com.dtms.movielistsampleapp.root.App;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +31,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityM
     MoviesActivityMVP.Presenter presenter;
 
     private MovieListAdapter listAdapter;
+    private List<ViewModel> resultList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +41,35 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityM
         ((App) getApplication()).getComponent().inject(this);
 
         ButterKnife.bind(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.setView(this);
-        presenter.loadData();
-    }
-
-    @Override
-    public void showData(List<ViewModel> dummyData) {
-        listAdapter = new MovieListAdapter(dummyData);
+        listAdapter = new MovieListAdapter(resultList);
         recyclerView.setAdapter(listAdapter);
         recyclerView.addItemDecoration(new DividerItem(this));
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.setView(this);
+        presenter.loadData();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.rxUnsubscribe();
+        resultList.clear();
+        listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateData(ViewModel viewModel) {
+        resultList.add(viewModel);
+        listAdapter.notifyItemInserted(resultList.size() - 1);
     }
 
     @Override
