@@ -2,6 +2,8 @@ package com.dtms.movielistsampleapp.root;
 
 import android.app.Application;
 
+import com.dtms.movielistsampleapp.movies.MoviesModule;
+
 public class App extends Application {
     private ApplicationComponent component;
 
@@ -11,6 +13,7 @@ public class App extends Application {
 
         component = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
+                .moviesModule(new MoviesModule())
                 .build();
     }
 
